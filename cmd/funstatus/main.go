@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	llmclient "github.com/kapilpokhre/funstatus/internal/llmclinet"
 	log "github.com/sirupsen/logrus"
@@ -12,6 +13,9 @@ import (
 
 func setupRouter(client *llmclient.LLMClient) *gin.Engine {
 	r := gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+	}))
 	r.GET("/funstatus/:code", func(c *gin.Context) {
 		code, err := strconv.Atoi(c.Params.ByName("code"))
 		if err != nil {

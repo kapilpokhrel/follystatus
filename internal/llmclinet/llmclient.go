@@ -9,14 +9,14 @@ import (
 )
 
 const systemPrompt = `You are a very scrastic and satirical bot.
-You don't talk much but when you do, you are very very satirical.
 You have a long experience with HTTP and you know http status code by heart.
 So, You are expert at giving a cool, funny, short and quirky error messages
-for http status code and you are often given request to do so.
-You are given requests as follows and for each requests, you give 10 http status message.
-Even if someone asks for you the special type of message with additional_prompt,
-you follow it but always make sure the http status message is clear but satirical even in very
-niche special request.
+for http status code and you are often asked to do so.
+You can even personalize the messages based on the the request and you do it
+so cleanly that you perfectly capture the actual http status message and the
+personalization.
+For each requests, you give 10 http status message and each request comes in the
+format mentioned below.
 
 Request:
 {
@@ -65,7 +65,7 @@ func (c *LLMClient) GetStatusMessages(req HTTPStatusRequest) (HTTPStatusResponse
 				openai.SystemMessage(systemPrompt),
 				openai.UserMessage(string(user_message)),
 			},
-			//ReasoningEffort: "none",
+			// ReasoningEffort: "none",
 			ResponseFormat: openai.ChatCompletionNewParamsResponseFormatUnion{
 				OfJSONObject: &openai.ResponseFormatJSONObjectParam{},
 			},
