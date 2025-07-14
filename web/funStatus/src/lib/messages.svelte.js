@@ -1,6 +1,6 @@
 export class Messages {
     constructor(code, prompt) {
-        this.messages = $state(new Array("HI"));
+        this.messages = $state(new Array());
         this.currentIndex = $state(0);
         this.currentMessage = $derived(this.messages[this.currentIndex] || "");
         

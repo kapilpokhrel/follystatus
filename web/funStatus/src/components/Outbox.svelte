@@ -21,37 +21,49 @@
         <div class="spinner"></div>
     {:else}
         <button
-            class="nav-arrow"
+            class="nav-side nav-arrow nav-prev"
             onclick={() => selectedMessages.prev()}
             disabled={selectedMessages.currentIndex == 0}
         >
             &lt;
         </button>
-        <span class="card">
+        <div class="card-container">
             <Card
                 {selectedCode}
                 currentMessage={selectedMessages.currentMessage}
             />
-        </span>
-        <button class="nav-arrow" onclick={() => selectedMessages.next()}
-            >&gt;</button
+        </div>
+        <button
+            class="nav-side nav-arrow nav-next"
+            onclick={() => selectedMessages.next()}
         >
+            &gt;
+        </button>
+        <div class="nav-bottom">
+            <button
+                class="nav-arrow nav-prev"
+                onclick={() => selectedMessages.prev()}
+                disabled={selectedMessages.currentIndex == 0}
+            >
+                &lt;
+            </button>
+            <button
+                class="nav-arrow nav-next"
+                onclick={() => selectedMessages.next()}
+            >
+                &gt;
+            </button>
+        </div>
     {/if}
 </div>
 
 <style>
-    .output_container {
-        max-width: 600px;
-        margin: auto;
-        padding: 1rem;
-        font-family: sans-serif;
-    }
     .container {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 10px;
-        padding: 40px 20px;
+        padding: 40px 10px;
     }
 
     .nav-arrow {
@@ -68,25 +80,19 @@
         border: none;
         background-color: transparent;
     }
-    
-    .card {
-        flex-grow: 1;
-    }
 
     .nav-arrow:hover {
         color: #2d3748;
     }
 
-    /* Optional: Make it mobile responsive */
-    @media (max-width: 768px) {
-        .container {
-            flex-direction: column;
-            gap: 16px;
-        }
+    .nav-bottom {
+        display: none;
+    }
 
-        .nav-arrow {
-            display: none;
-        }
+    .card-container {
+        flex-grow: 1;
+        aspect-ratio: 16/10;
+        min-width: 300px;
     }
 
     .spinner {
@@ -103,5 +109,28 @@
         to {
             transform: rotate(360deg);
         }
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .nav-side {
+            display: none;
+        }
+
+        .nav-bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            width: 100%;
+        }
+
+        .card-container {
+            width: 95%;
+        }
+
     }
 </style>

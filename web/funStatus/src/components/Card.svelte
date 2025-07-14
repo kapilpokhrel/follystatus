@@ -4,10 +4,10 @@
 </script>
 
 <div class="card">
-    <span>
+    <div>
         <strong>{selectedCode}: {statusCodeMap[parseInt(selectedCode)]}</strong>
-    </span>
-    <span>{currentMessage}</span>
+    </div>
+    <div>{currentMessage}</div>
 </div>
 
 <style>
@@ -16,12 +16,15 @@
         border: 3px solid #e2e8f0;
         border-radius: 12px;
         max-width: 520px;
-        margin: 20px 10px;
         padding: 30px 40px;
         text-align: center;
+        box-sizing: border-box;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
     }
 
-    .card span:first-child {
+    .card div:first-child {
         display: block;
         font-size: 1.8rem;
         font-weight: 600;
@@ -29,10 +32,12 @@
         margin-bottom: 14px;
     }
 
-    .card span:last-child {
+    .card div:last-child {
         font-size: 1.2rem;
         color: #4a5568;
         line-height: 1.6;
+        margin-top: auto;
+        margin-bottom: auto;
     }
 
     @keyframes fadeIn {

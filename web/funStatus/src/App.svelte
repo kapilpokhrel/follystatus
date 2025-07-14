@@ -2,6 +2,9 @@
     import Dropdown from "./components/Dropdown.svelte";
     import Promptbox from "./components/Promptbox.svelte";
     import Outbox from "./components/Outbox.svelte";
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    console.log(urlParams.get("code"), urlParams.get("prompt"), urlParams.get("msg"));
 
     let selectedCode = $state(200);
     let prompt = $state("");
@@ -19,7 +22,7 @@
 
 <style>
     .container {
-        max-width: 600px;
+        max-width: 620px;
         margin: auto;
         padding: 1rem;
         font-family: sans-serif;
@@ -44,7 +47,7 @@
     }
 
     /* Small screens: stack vertically */
-    @media (max-width: 600px) {
+    @media (max-width: 680px) {
         .inputArea {
             flex-direction: column;
         }
