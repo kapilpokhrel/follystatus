@@ -1,6 +1,7 @@
 <script>
     import Card from "./Card.svelte";
     import { Messages } from "../lib/messages.svelte.js";
+    import { draw, fade } from "svelte/transition";
 
     let { selectedCode, prompt } = $props();
     const codeMessages = new Map();
@@ -27,12 +28,14 @@
         >
             &lt;
         </button>
-        <div class="card-container">
-            <Card
-                {selectedCode}
-                currentMessage={selectedMessages.currentMessage}
-            />
-        </div>
+        {#key selectedMessages.currentMessage}
+            <div class="card-container" in:fade>
+                <Card
+                    {selectedCode}
+                    currentMessage={selectedMessages.currentMessage}
+                />
+            </div>
+        {/key}
         <button
             class="nav-side nav-arrow nav-next"
             onclick={() => selectedMessages.next()}
@@ -62,27 +65,35 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
-        padding: 40px 10px;
+        gap: 1rem;
+        padding: 2rem 0;
     }
 
     .nav-arrow {
-        width: 60px;
-        height: 60px;
-        text-align: center;
-        font-size: 2.4rem;
+        width: 50px;
+        height: 50px;
+        font-size: 2rem;
         cursor: pointer;
         user-select: none;
-        transition: color 0.2s ease;
+        transition: all 0.2s ease;
         flex-shrink: 0;
         border-radius: 50%;
-        display: inline-block;
-        border: none;
-        background-color: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #cbd5e0;
+        background-color: #fff;
+        color: #4a5568;
     }
 
     .nav-arrow:hover {
-        color: #2d3748;
+        background-color: #f7fafc;
+        border-color: #a0aec0;
+    }
+
+    .nav-arrow:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
 
     .nav-bottom {
@@ -91,15 +102,16 @@
 
     .card-container {
         flex-grow: 1;
-        aspect-ratio: 16/10;
+        aspect-ratio: 16/9;
+        max-width: 560px;
         min-width: 300px;
     }
 
     .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid #ccc;
-        border-top: 4px solid #333;
+        width: 50px;
+        height: 50px;
+        border: 5px solid #e2e8f0;
+        border-top: 5px solid #4299e1;
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin: 2rem auto;
@@ -111,9 +123,10 @@
         }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 680px) {
         .container {
             flex-direction: column;
+            gap: 1.5rem;
         }
 
         .nav-side {
@@ -124,13 +137,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 40px;
+            gap: 2rem;
             width: 100%;
         }
 
         .card-container {
-            width: 95%;
+            width: 100%;
         }
-
     }
 </style>

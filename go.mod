@@ -1,4 +1,4 @@
-module github.com/kapilpokhre/funstatus
+module github.com/kapilpokhre/follystatus
 
 go 1.24.4
 

@@ -11,9 +11,8 @@ export class Messages {
     }
     
     #getdata() {
-        const url = `http://0.0.0.0:8080/funstatus/${this.statusCode}?` + 
+        const url = `http://10.100.53.176:8080/funstatus/${this.statusCode}?` + 
             new URLSearchParams({prompt: this.prompt}).toString();
-        console.log("Fetching new messages..", url);
         fetch(url)
             .then(response => response.json())
             .then(data => this.messages.push(...data.status_messages))
