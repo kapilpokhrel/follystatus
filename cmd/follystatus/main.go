@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	llmclient "github.com/kapilpokhre/funstatus/internal/llmclinet"
+	llmclient "github.com/kapilpokhre/follystatus/internal/llmclinet"
 	log "github.com/sirupsen/logrus"
 )
 
