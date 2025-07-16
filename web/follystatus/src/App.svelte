@@ -14,7 +14,7 @@
 
 <svelte:head>
     {#if (code && initMsg)}
-        <meta content="http://localhost:3001/og-image?code={code}&&msg={encodeURIComponent(initMsg)}" property="og:image">
+        <meta content="https://ec2a0d11f671.ngrok-free.app/og-image?code={code}&&msg={encodeURIComponent(initMsg)}" property="og:image">
     {/if}
 </svelte:head>
 
