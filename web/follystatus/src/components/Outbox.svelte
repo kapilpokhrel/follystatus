@@ -1,20 +1,34 @@
 <script>
     import Card from "./Card.svelte";
+    import '@fortawesome/fontawesome-free/css/all.min.css'
     import { Messages } from "../lib/messages.svelte.js";
     import { draw, fade } from "svelte/transition";
 
-    let { selectedCode, prompt } = $props();
+    let { selectedCode, prompt, initMsg = "" } = $props();
     const codeMessages = new Map();
 
     let selectedMessages = $derived.by(() => {
         let selectedMessages = codeMessages.get(selectedCode);
         if (!selectedMessages || selectedMessages.prompt != prompt) {
-            let newMessages = new Messages(selectedCode, prompt);
+            let newMessages = new Messages(selectedCode, prompt, initMsg);
             codeMessages.set(selectedCode, newMessages);
             return newMessages;
         }
         return selectedMessages;
     });
+
+    function shareCard() {
+        const msg = encodeURIComponent(selectedMessages.currentMessage);
+        const urlPrompt = encodeURIComponent(prompt);
+
+        const baseUrl = window.location.origin + window.location.pathname;
+        const url = `${baseUrl}?code=${selectedCode}&msg=${msg}&prompt=${urlPrompt}`;
+
+        navigator.clipboard.writeText(url)
+          .then(() => alert("Link copied to clipboard!"))
+          .catch(err => alert("Failed to copy link"));
+    }
+
 </script>
 
 <div class="container">
@@ -25,8 +39,9 @@
             class="nav-side nav-arrow nav-prev"
             onclick={() => selectedMessages.prev()}
             disabled={selectedMessages.currentIndex == 0}
+            aria-label="previous"
         >
-            &lt;
+            <i class="fa-solid fa-circle-arrow-left"></i>
         </button>
         {#key selectedMessages.currentMessage}
             <div class="card-container" in:fade>
@@ -34,27 +49,33 @@
                     {selectedCode}
                     currentMessage={selectedMessages.currentMessage}
                 />
+                <button onclick={shareCard} aria-label="share">
+                    <i class="fas fa-share"></i>
+                </button>
             </div>
         {/key}
         <button
             class="nav-side nav-arrow nav-next"
             onclick={() => selectedMessages.next()}
+            aria-label="next"
         >
-            &gt;
+            <i class="fa-solid fa-circle-arrow-right"></i>
         </button>
         <div class="nav-bottom">
             <button
                 class="nav-arrow nav-prev"
                 onclick={() => selectedMessages.prev()}
                 disabled={selectedMessages.currentIndex == 0}
+                aria-label="previous"
             >
-                &lt;
+                <i class="fa-solid fa-circle-arrow-left"></i>
             </button>
             <button
                 class="nav-arrow nav-next"
                 onclick={() => selectedMessages.next()}
+                aria-label="next"
             >
-                &gt;
+                <i class="fa-solid fa-circle-arrow-right"></i>
             </button>
         </div>
     {/if}
@@ -83,7 +104,7 @@
         justify-content: center;
         border: 1px solid #cbd5e0;
         background-color: #fff;
-        color: #4a5568;
+        color: #3F72AF;
     }
 
     .nav-arrow:hover {
@@ -105,8 +126,22 @@
         aspect-ratio: 16/9;
         max-width: 560px;
         min-width: 300px;
+        position: relative;
     }
-
+    
+    .card-container button {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background-color: #3F72AF;
+        color: white;
+        border: none;
+        border-radius: 999px;
+        padding: 0.4rem 0.6rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        z-index: 1;
+    }
     .spinner {
         width: 50px;
         height: 50px;

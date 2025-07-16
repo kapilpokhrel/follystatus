@@ -1,6 +1,6 @@
 export class Messages {
-    constructor(code, prompt) {
-        this.messages = $state(new Array());
+    constructor(code, prompt, initMsg = "") {
+        this.messages = $state(new Array(initMsg || 0));
         this.currentIndex = $state(0);
         this.currentMessage = $derived(this.messages[this.currentIndex] || "");
         
@@ -11,7 +11,7 @@ export class Messages {
     }
     
     #getdata() {
-        const url = `http://10.100.53.176:8080/funstatus/${this.statusCode}?` + 
+        const url = `https://follystatus-kapilpokhrel8058-iyk7480g.leapcell.dev/funstatus/${this.statusCode}?` + 
             new URLSearchParams({prompt: this.prompt}).toString();
         fetch(url)
             .then(response => response.json())

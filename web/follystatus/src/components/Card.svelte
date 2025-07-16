@@ -4,10 +4,10 @@
 </script>
 
 <div class="card">
-    <div>
-        <strong>{selectedCode}: {statusCodeMap[parseInt(selectedCode)]}</strong>
+    <div class="card-code">
+        {selectedCode}: {statusCodeMap[parseInt(selectedCode)]}
     </div>
-    <div>{currentMessage}</div>
+    <div class="card-message">{currentMessage}</div>
 </div>
 
 <style>
@@ -16,24 +16,31 @@
         border: 3px solid #e2e8f0;
         border-radius: 1rem;
         padding: 2rem;
-        text-align: center;
         box-sizing: border-box;
         height: 100%;
         display: flex;
+        align-items: center;
         flex-direction: column;
         justify-content: center;
     }
 
-    .card div:first-child {
-        font-size: 2rem;
+    .card-code {
+        font-family: JetBrainsMono;
+        font-size: 2.25rem;
         font-weight: 700;
         color: #1a202c;
         margin-bottom: 1rem;
+
+        /*jusitfy-content is necessary for satori*/
+        justify-content: center;
     }
 
-    .card div:last-child {
-        font-size: 1.25rem;
-        color: #4a5568;
+    .card-message {
+        font-family: EduVICWANTBeginner;
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: #2a2528;
         line-height: 1.6;
+        justify-content: center;
     }
 </style>

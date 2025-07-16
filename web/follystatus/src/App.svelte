@@ -2,10 +2,21 @@
     import Dropdown from "./components/Dropdown.svelte";
     import Promptbox from "./components/Promptbox.svelte";
     import Outbox from "./components/Outbox.svelte";
+    import "./static/global.css"
 
-    let selectedCode = $state(200);
-    let prompt = $state("");
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = parseInt(urlParams.get('code'));
+    const urlPrompt = urlParams.get('prompt') || "";
+    const initMsg = urlParams.get('msg') || "";
+    let selectedCode = $state(code || 200);
+    let prompt = $state(urlPrompt);
 </script>
+
+<svelte:head>
+    {#if (code && initMsg)}
+        <meta content="http://localhost:3001/og-image?code={code}&&msg={encodeURIComponent(initMsg)}" property="og:image">
+    {/if}
+</svelte:head>
 
 <main class="container">
     <div class="header">
@@ -16,7 +27,7 @@
         <span class="dropdown"><Dropdown bind:selectedCode /></span>
         <span class="promptinput"><Promptbox bind:prompt /></span>
     </div>
-    <Outbox {selectedCode} {prompt} />
+    <Outbox {selectedCode} {prompt} {initMsg}/>
 </main>
 
 <style>
