@@ -38,9 +38,16 @@ const getMimeType = (filePath) => {
 
 const cardComponentPath = path.resolve(__dirname, './components/Card.svelte');
 
+const fontCache = new Map();
+
 async function getFont(fontName) {
+    if (fontCache.has(fontName)) {
+        return fontCache.get(fontName);
+    }
+
     const fontPath = path.join(__dirname, `./assets/fonts/${fontName}`);
     const buffer = await fs.readFile(fontPath);
+    fontCache.set(fontName, buffer);
     return buffer;
 }
 
@@ -68,31 +75,49 @@ async function getImage(jsx, options) {
     const image = resvg.render();
     return image.asPng()
 }
-   
-async function renderComponent(componentPath, props) {
-    const svelteCode = await fs.readFile(componentPath, 'utf-8');
+
+const componentCache = new Map();
+
+async function getComponent(componentPath) {
+    if (componentCache.has(componentPath)) {
+        return componentCache.get(componentPath);
+    }
+
+    const svelteCode = await fs.readFile(componentPath, "utf-8");
 
     const aliasPreprocessor = {
         script: async ({ content }) => {
-            const replaced = content.replace(/\$lib\//g, './lib/');
+            const replaced = content.replace(/\$lib\//g, "./lib/");
             return { code: replaced };
-        }
+        },
     };
 
-    const preprocessed = await preprocess(svelteCode, aliasPreprocessor, { filename: 'Card.svelte' });
-    const compiled = compile(preprocessed.code, {generate: 'server', css: 'external'});
+    const preprocessed = await preprocess(svelteCode, aliasPreprocessor, {
+        filename: "Card.svelte",
+    });
 
-    const tempFile = path.join(__dirname, `.svelte-compiled-card.mjs`);
-    await fs.writeFile(tempFile, compiled.js.code, 'utf-8');
+    const compiled = compile(preprocessed.code, {
+        generate: "server",
+        css: "external",
+    });
+
+    const tempFile = path.join(__dirname, `.svelte-compiled-${path.basename(componentPath)}.mjs`);
+    await fs.writeFile(tempFile, compiled.js.code, "utf-8");
 
     const module = await import(pathToFileURL(tempFile).href);
     const component = module.default;
-    const componentRendered = render(component, {props: props});
-    const renderedHTML = `${componentRendered.html}<style>${compiled.css.code}</style>`
     
-    await fs.unlink(tempFile);
-    return renderedHTML;
+    const out = { component: component, css: compiled.css.code };
+    componentCache.set(componentPath, out);
+    return out;
+}
 
+async function renderComponent(componentPath, props) {
+    const { component, css } = await getComponent(componentPath);
+    const componentRendered = render(component, {props: props});
+    const renderedHTML = `${componentRendered.html}<style>${css}</style>`
+    
+    return renderedHTML;
 }
 
 async function handleImageRequest(req, res) {

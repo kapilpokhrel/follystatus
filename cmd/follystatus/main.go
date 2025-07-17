@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -41,5 +42,10 @@ func main() {
 	}
 	client := llmclient.NewLLMClient(key)
 	r := setupRouter(client)
-	r.Run(":8080")
+
+	port, ok := os.LookupEnv("PORT")
+	if !ok {
+		port = "8080"
+	}
+	r.Run(fmt.Sprintf(":%s", port))
 }
