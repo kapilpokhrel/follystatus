@@ -1,6 +1,6 @@
 <script>
-    import { statusCodeMap } from "../lib/status_codes.js";
-    import { groupedStatusCodes } from "../lib/status_codes.js";
+    import { statusCodeMap } from "$lib/status_codes.js";
+    import { groupedStatusCodes } from "$lib/status_codes.js";
     let { selectedCode = $bindable() } = $props();
 </script>
 

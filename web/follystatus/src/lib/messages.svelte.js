@@ -11,7 +11,7 @@ export class Messages {
     }
     
     #getdata() {
-        const url = `https://follystatus-kapilpokhrel8058-iyk7480g.leapcell.dev/funstatus/${this.statusCode}?` + 
+        const url = `https://follystatus-api.onrender.com/funstatus/${this.statusCode}?` + 
             new URLSearchParams({prompt: this.prompt}).toString();
         fetch(url)
             .then(response => response.json())

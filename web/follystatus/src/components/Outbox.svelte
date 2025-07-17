@@ -1,7 +1,7 @@
 <script>
-    import Card from "./Card.svelte";
+    import Card from "$components/Card.svelte";
     import '@fortawesome/fontawesome-free/css/all.min.css'
-    import { Messages } from "../lib/messages.svelte.js";
+    import { Messages } from "$lib/messages.svelte.js";
     import { draw, fade } from "svelte/transition";
 
     let { selectedCode, prompt, initMsg = "" } = $props();

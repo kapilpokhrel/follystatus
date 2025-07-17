@@ -12,12 +12,6 @@
     let prompt = $state(urlPrompt);
 </script>
 
-<svelte:head>
-    {#if (code && initMsg)}
-        <meta content="https://ec2a0d11f671.ngrok-free.app/og-image?code={code}&&msg={encodeURIComponent(initMsg)}" property="og:image">
-    {/if}
-</svelte:head>
-
 <main class="container">
     <div class="header">
         <span class="folly">folly</span>

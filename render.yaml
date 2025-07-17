@@ -5,10 +5,21 @@ services:
     region: frankfurt
     plan: free
     branch: main
-    buildCommand: cd ./web/follystatus/ && npm install
-    startCommand: npx vite --host --port 8005
+    rootDir: web/follystatus
+    buildCommand: npm install && npm run build
+    startCommand: node src/server.js
     repo: https://github.com/kapilpokhrel/follystatus.git
     autoDeploy: false
     envVars:
-      - key: __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS
-        value: follystatus.onrender.com
+      - key: OGImageBaseURL
+        value: https://follystatus.onrender.com
+
+  - type: web
+    runtime: go
+    name: follystatus-api
+    region: frankfurt
+    plan: free
+    branch: main
+    rootDir: cmd/follystatus
+    buildCommand: go build -tags netgo -ldflags '-s -w' -o follystatusbin
+    startCommand: ./follystatusbin

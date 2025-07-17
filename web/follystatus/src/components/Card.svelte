@@ -1,5 +1,5 @@
 <script>
-    import { statusCodeMap } from "../lib/status_codes.js";
+    import { statusCodeMap } from "$lib/status_codes.js";
     let { selectedCode, currentMessage } = $props();
 </script>
 
